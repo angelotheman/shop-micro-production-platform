@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-service
+  namespace: shopmicro
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: ml-service }
+  template:
+    metadata:
+      labels: { app: ml-service }
+    spec:
+      containers:
+      - name: ml-service
+        image: your-registry/shopmicro-ml:latest
+        ports:
+        - containerPort: 5000
