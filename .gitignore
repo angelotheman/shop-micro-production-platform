@@ -1,0 +1,92 @@
+# -------------------------
+# OS / EDITOR NOISE
+# -------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# NODE / FRONTEND
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.cache/
+*.tsbuildinfo
+
+# -------------------------
+# PYTHON (ML SERVICE)
+# -------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+*.egg-info/
+
+# -------------------------
+# DOCKER
+# -------------------------
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# -------------------------
+# TERRAFORM (VERY IMPORTANT)
+# -------------------------
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# -------------------------
+# ANSIBLE
+# -------------------------
+*.retry
+infrastructure/ansible/inventory
+!infrastructure/ansible/inventory.example
+
+# -------------------------
+# KUBERNETES / KUBECONFIG
+# -------------------------
+.kube/
+kubeconfig
+
+# -------------------------
+# LOGS / TEMP
+# -------------------------
+logs/
+*.log
+tmp/
+temp/
+coverage/
+coverage.xml
+.nyc_output/
+
+# -------------------------
+# EVIDENCE (HEAVY FILES)
+# -------------------------
+evidence/**/*.zip
+evidence/**/*.tar
+evidence/**/*.gz
+
+# -------------------------
+# MISC
+# -------------------------
+*.bak
+*.orig
