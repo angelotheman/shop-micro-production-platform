@@ -1,12 +1,14 @@
-subscription_id = "0000-0000-0000-00000"
-project_name        = "shopmicro"
-location            = "westeurope"
-resource_group_name = "shopmicro-rg"
+subscription_id     = "0000-0000-0000-0000"
+project_name        = "<project_name>"
+location            = "<location>"
+resource_group_name = "rg"
 
 # Choose a globally unique ACR name (lowercase letters/numbers only)
-acr_name            = "shopmicroacrangel01"
+acr_name = "<registry name>"
 
-aks_name   = "shopmicro-aks"
-dns_prefix = "shopmicro"
+aks_name   = "<cluster name>"
+dns_prefix = "<dns dns_prefix>"
 node_count = 2
-node_size  = "Standard_B4ms"
+node_size  = "Standard_B2s_v2"
+node_pool  = "<node pool name>"
+environment_name = "environment name"
