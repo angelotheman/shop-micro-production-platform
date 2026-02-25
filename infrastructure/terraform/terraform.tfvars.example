@@ -1,0 +1,12 @@
+subscription_id = "0000-0000-0000-00000"
+project_name        = "shopmicro"
+location            = "westeurope"
+resource_group_name = "shopmicro-rg"
+
+# Choose a globally unique ACR name (lowercase letters/numbers only)
+acr_name            = "shopmicroacrangel01"
+
+aks_name   = "shopmicro-aks"
+dns_prefix = "shopmicro"
+node_count = 2
+node_size  = "Standard_B4ms"
