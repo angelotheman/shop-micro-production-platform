@@ -5,3 +5,5 @@ output "aks_name" { value = var.aks_name }
 output "aks_get_credentials_command" {
   value = "az aks get-credentials --resource-group ${azurerm_resource_group.rg.name} --name ${module.aks.aks_name}"
 }
+output "key_vault_name" { value = module.keyvault.key_vault_name }
+output "key_vault_uri" { value = module.keyvault.key_vault_uri }

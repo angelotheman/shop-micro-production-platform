@@ -1,0 +1,12 @@
+---
+- name: Setup ShopMicro Infrastructure
+  hosts: all
+  become: yes
+  vars:
+    kubectl_version: "1.28.0"
+    helm_version: "3.13.0"
+
+  roles:
+    - docker
+    - kubectl
+    - helm

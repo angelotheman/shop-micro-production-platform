@@ -12,3 +12,6 @@ node_count = 2
 node_size  = "Standard_B2s_v2"
 node_pool  = "<node pool name>"
 environment_name = "environment name"
+
+# Key Vault
+keyvault_name = "<keyvault name>"

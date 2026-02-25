@@ -1,0 +1,42 @@
+name: Policy as Code
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+ OPA:
+    name: OPA Policy Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Conftest
+        uses: dflook/terraform-k8s-conftest-action@v1
+        with:
+          directory: k8s
+          policy: |
+            package main
+            
+            # Deny resources without resource limits
+            deny[msg] {
+              input.kind == "Deployment"
+              not input.spec.template.spec.containers[_].resources.limits
+              msg = "Deployment must have resource limits"
+            }
+            
+            # Deny resources without security context
+            deny[msg] {
+              input.kind == "Deployment"
+              not input.spec.template.spec.containers[_].securityContext
+              msg = "Deployment must have securityContext"
+            }
+            
+            # Require secrets from external source
+            deny[msg] {
+              input.kind == "Secret"
+              input.stringData.DB_PASSWORD == "postgres"
+              msg = "Secret must not contain default plaintext passwords"
+            }

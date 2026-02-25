@@ -1,0 +1,54 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'shopmicro-backend'
+          static_configs:
+            - targets: ['backend.shopmicro.svc.cluster.local:8080']
+        - job_name: 'shopmicro-ml'
+          static_configs:
+            - targets: ['ml-service.shopmicro.svc.cluster.local:5000']
+
+processors:
+  batch:
+    timeout: 10s
+    send_batch_size: 1000
+
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: shopmicro
+
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch, memory_limiter]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [loki]
+    traces:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [otlp]

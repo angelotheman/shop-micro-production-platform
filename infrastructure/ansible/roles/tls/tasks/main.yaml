@@ -1,0 +1,44 @@
+---
+- name: Generate TLS certificates
+  hosts: localhost
+  connection: local
+  vars:
+    certs_dir: "{{ playbook_dir }}/../../certs"
+  tasks:
+    - name: Create certificates directory
+      file:
+        path: "{{ certs_dir }}"
+        state: directory
+        mode: '0700'
+
+    - name: Generate self-signed CA
+      command: |
+        openssl genrsa -out {{ certs_dir }}/ca.key 2048
+        openssl req -x509 -new -nodes -key {{ certs_dir }}/ca.key \
+          -sha256 -days 3650 -out {{ certs_dir }}/ca.crt \
+          -subj "/CN=shopmicro-ca"
+      creates: "{{ certs_dir }}/ca.crt"
+
+    - name: Generate backend TLS cert
+      command: |
+        openssl genrsa -out {{ certs_dir }}/backend.key 2048
+        openssl req -new -key {{ certs_dir }}/backend.key \
+          -out {{ certs_dir }}/backend.csr \
+          -subj "/CN=backend"
+        openssl x509 -req -in {{ certs_dir }}/backend.csr \
+          -CA {{ certs_dir }}/ca.crt -CAkey {{ certs_dir }}/ca.key \
+          -CAcreateserial -out {{ certs_dir }}/backend.crt \
+          -days 365 -sha256
+      creates: "{{ certs_dir }}/backend.crt"
+
+    - name: Generate frontend TLS cert
+      command: |
+        openssl genrsa -out {{ certs_dir }}/frontend.key 2048
+        openssl req -new -key {{ certs_dir }}/frontend.key \
+          -out {{ certs_dir }}/frontend.csr \
+          -subj "/CN=frontend"
+        openssl x509 -req -in {{ certs_dir }}/frontend.csr \
+          -CA {{ certs_dir }}/ca.crt -CAkey {{ certs_dir }}/ca.key \
+          -CAcreateserial -out {{ certs_dir }}/frontend.crt \
+          -days 365 -sha256
+      creates: "{{ certs_dir }}/frontend.crt"

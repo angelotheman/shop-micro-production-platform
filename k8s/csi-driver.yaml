@@ -1,0 +1,19 @@
+# Azure Key Vault CSI Driver Installation
+# Run these commands to install the CSI driver on your AKS cluster:
+
+# 1. Add Helm repo
+# helm repo add secrets-store-csi-driver https://kubernetes-sigs.secrets-store-csi-driver.io/charts
+# helm repo update
+
+# 2. Install the driver
+# helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
+#   --namespace kube-system \
+#   --set enableSecretRotation=true \
+#   --set rotationPollInterval=30s
+
+# 3. Install Azure provider
+# helm install azure-provider secrets-store-csi-driver/secrets-store-csi-driver-provider-azure \
+#   --namespace kube-system
+
+# 4. Enable the addon in AKS (alternative)
+# az aks enable-addons --addons azure-keyvault-secrets-provider --name shopmicro-aks --resource-group shopmicro-rg

@@ -6,4 +6,5 @@ metadata:
 data:
   DB_HOST: "postgres"
   DB_NAME: "shopmicro"
+  DB_USER: "postgres"
   REDIS_URL: "redis://redis:6379"

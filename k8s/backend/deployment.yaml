@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: your-registry/shopmicro-backend:latest
+          image: shopmicroregistry.azurecr.io/shopmicro-backend:latest
           ports:
             - containerPort: 8080
 
@@ -40,14 +40,14 @@ spec:
 
             - name: DB_USER
               valueFrom:
-                secretKeyRef:
-                  name: backend-secret
+                configMapKeyRef:
+                  name: backend-config
                   key: DB_USER
 
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
+                  name: backend-secrets
                   key: DB_PASSWORD
 
           livenessProbe:

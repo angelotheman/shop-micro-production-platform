@@ -4,6 +4,9 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
+# Get current client config for tenant info
+data "azurerm_client_config" "current" {}
+
 # ACR module
 module "acr" {
   source              = "./modules/acr"
@@ -23,5 +26,15 @@ module "aks" {
   node_size           = var.node_size
   acr_id              = module.acr.acr_id
   node_pool           = var.node_pool
-  environment_name = var.environment_name
+  environment_name    = var.environment_name
+}
+
+# Key Vault module
+module "keyvault" {
+  source              = "./modules/keyvault"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  keyvault_name       = var.keyvault_name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  object_id           = module.aks.kubelet_object_id
 }
