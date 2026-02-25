@@ -6,13 +6,34 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: ml-service }
+    matchLabels:
+      app: ml-service
   template:
     metadata:
-      labels: { app: ml-service }
+      labels:
+        app: ml-service
     spec:
       containers:
-      - name: ml-service
-        image: your-registry/shopmicro-ml:latest
-        ports:
-        - containerPort: 5000
+        - name: ml-service
+          image: your-registry/shopmicro-ml:latest
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
