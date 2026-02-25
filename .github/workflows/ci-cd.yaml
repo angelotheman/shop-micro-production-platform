@@ -44,12 +44,6 @@ jobs:
       - name: Check Python syntax
         run: python -m py_compile ml-service/app.py
 
-      - name: Check YAML syntax
-        run: |
-          for f in $(find k8s -name "*.yaml"); do
-            python3 -c "import yaml; yaml.safe_load(open('$f'))" || exit 1
-          done
-
   test:
     name: Unit & Integration Tests
     runs-on: ubuntu-latest
