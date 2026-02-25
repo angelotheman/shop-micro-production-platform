@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 env:
   REGISTRY: shopmicroregistry.azurecr.io
   RESOURCE_GROUP: shop-micro-rg
@@ -180,8 +183,20 @@ jobs:
           # Update ml-service image
           sed -i 's|shopmicroregistry.azurecr.io/shopmicro-ml:.*|shopmicroregistry.azurecr.io/shopmicro-ml:${{ github.sha }}|' ml-service/deployment.yaml
 
+      - name: Commit and push image tag updates
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add k8s/backend/deployment.yaml k8s/frontend/deployment.yaml k8s/ml-service/deployment.yaml
+          git diff --staged --quiet || git commit -m "Update image tags to ${{ github.sha }}"
+          git push
+
       - name: Deploy to Kubernetes
         run: |
+          # Install NGINX Ingress Controller if not present
+          kubectl get ns ingress-nginx &>/dev/null || kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
+          
+          # Apply namespace and all resources
           kubectl apply -f k8s/namespace.yaml
           kubectl apply -f k8s/
           
