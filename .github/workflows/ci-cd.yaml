@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: shopmicroregistry.azurecr.io
-  RESOURCE_GROUP: shopmicro-rg
+  RESOURCE_GROUP: shop-micro-rg
   AKS_NAME: shopmicro-aks
 
 jobs:

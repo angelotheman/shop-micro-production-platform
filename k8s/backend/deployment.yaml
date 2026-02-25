@@ -13,9 +13,37 @@ spec:
       labels:
         app: backend
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: backend
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - general
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "shopmicro"
+        effect: "NoSchedule"
       containers:
         - name: backend
           image: shopmicroregistry.azurecr.io/shopmicro-backend:latest
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 8080
 

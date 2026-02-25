@@ -38,3 +38,17 @@ module "keyvault" {
   tenant_id           = data.azurerm_client_config.current.tenant_id
   object_id           = module.aks.kubelet_object_id
 }
+
+# Grant AKS managed identity permission to pull from ACR
+resource "azurerm_role_assignment" "acr_pull" {
+  principal_id         = module.aks.kubelet_object_id
+  role_definition_name = "AcrPull"
+  scope                = module.acr.acr_id
+}
+
+# Grant AKS managed identity access to Key Vault
+resource "azurerm_role_assignment" "keyvault_access" {
+  principal_id         = module.aks.kubelet_object_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = module.keyvault.key_vault_id
+}
