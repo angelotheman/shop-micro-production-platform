@@ -81,10 +81,6 @@ jobs:
     name: Build & Push Images
     runs-on: ubuntu-latest
     needs: [lint, test]
-    outputs:
-      backend-tag: ${{ steps.meta-backend.outputs.tags }}
-      frontend-tag: ${{ steps.meta-frontend.outputs.tags }}
-      ml-tag: ${{ steps.meta-ml.outputs.tags }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -92,49 +88,24 @@ jobs:
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ env.REGISTRY }}.azurecr.io
+          login-server: ${{ env.REGISTRY }}
           username: ${{ secrets.AZURE_CR_USERNAME }}
           password: ${{ secrets.AZURE_CR_PASSWORD }}
 
-      - name: Extract metadata for backend
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/shopmicro-backend
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix=
-            type=raw,value=latest,enable={{is_default_branch}}
-
       - name: Build and push backend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+        run: |
+          docker build -t $REGISTRY/shopmicro-backend:$IMAGE_TAG ./backend
+          docker push $REGISTRY/shopmicro-backend:$IMAGE_TAG
 
       - name: Build and push frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ env.REGISTRY }}/shopmicro-frontend:${{ github.sha }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+        run: |
+          docker build -t $REGISTRY/shopmicro-frontend:$IMAGE_TAG ./frontend
+          docker push $REGISTRY/shopmicro-frontend:$IMAGE_TAG
 
       - name: Build and push ml-service
-        uses: docker/build-push-action@v5
-        with:
-          context: ./ml-service
-          push: true
-          tags: ${{ env.REGISTRY }}/shopmicro-ml:${{ github.sha }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+        run: |
+          docker build -t $REGISTRY/shopmicro-ml:$IMAGE_TAG ./ml-service
+          docker push $REGISTRY/shopmicro-ml:$IMAGE_TAG
 
   deploy-dev:
     name: Deploy to Dev
@@ -162,20 +133,20 @@ jobs:
           cd k8s
           
           # Update backend image
-          sed -i 's|shopmicroregistry.azurecr.io/shopmicro-backend:.*|shopmicroregistry.azurecr.io/shopmicro-backend:${{ github.sha }}|' backend/deployment.yaml
+          sed -i "s|$REGISTRY/shopmicro-backend:.*|$REGISTRY/shopmicro-backend:$IMAGE_TAG|" backend/deployment.yaml
           
           # Update frontend image
-          sed -i 's|shopmicroregistry.azurecr.io/shopmicro-frontend:.*|shopmicroregistry.azurecr.io/shopmicro-frontend:${{ github.sha }}|' frontend/deployment.yaml
+          sed -i "s|$REGISTRY/shopmicro-frontend:.*|$REGISTRY/shopmicro-frontend:$IMAGE_TAG|" frontend/deployment.yaml
           
           # Update ml-service image
-          sed -i 's|shopmicroregistry.azurecr.io/shopmicro-ml:.*|shopmicroregistry.azurecr.io/shopmicro-ml:${{ github.sha }}|' ml-service/deployment.yaml
+          sed -i "s|$REGISTRY/shopmicro-ml:.*|$REGISTRY/shopmicro-ml:$IMAGE_TAG|" ml-service/deployment.yaml
 
       - name: Commit and push image tag updates
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add k8s/backend/deployment.yaml k8s/frontend/deployment.yaml k8s/ml-service/deployment.yaml
-          git diff --staged --quiet || git commit -m "Update image tags to ${{ github.sha }}"
+          git diff --staged --quiet || git commit -m "Update image tags to $IMAGE_TAG"
           git push
 
       - name: Deploy to Kubernetes
