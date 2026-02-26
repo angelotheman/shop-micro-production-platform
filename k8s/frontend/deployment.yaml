@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: shopmicroregistry.azurecr.io/shopmicro-frontend:3d15c2c65b061ab35eedf1ec5d1c02c57e2eadd2
+          image: shopmicroregistry.azurecr.io/shopmicro-frontend:846263264baf165cc7470e847282e996c3bcc3d5
           ports:
             - containerPort: 80
           resources:
