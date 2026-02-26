@@ -5,6 +5,7 @@ metadata:
   namespace: shopmicro
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -15,36 +16,36 @@ spec:
   - host: angelotheman.myddns.me
     http:
       paths:
-      - path: /monitor
-        pathType: Prefix
+      - path: /monitor(/.*)?
+        pathType: ImplementationSpecific
         backend:
           service:
             name: grafana
             port:
               number: 3000
-      - path: /login
-        pathType: Prefix
+      - path: /login(/.*)?
+        pathType: ImplementationSpecific
         backend:
           service:
             name: grafana
             port:
               number: 3000
-      - path: /api
-        pathType: Prefix
+      - path: /api(/|$).*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: frontend
             port:
               number: 80
-      - path: /ml
-        pathType: Prefix
+      - path: /ml(/|$).*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: frontend
             port:
               number: 80
-      - path: /assets
-        pathType: Prefix
+      - path: /assets(/|$).*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: frontend
