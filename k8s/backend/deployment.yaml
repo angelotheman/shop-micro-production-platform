@@ -38,7 +38,7 @@ spec:
         effect: "NoSchedule"
       containers:
         - name: backend
-          image: shopmicroregistry.azurecr.io/shopmicro-backend:b8d2d5c911796f867906490ccb3bf112b1a89a8e
+          image: shopmicroregistry.azurecr.io/shopmicro-backend:c524eccc4bef74af5ec8d536773b6fb07f6efa21
           securityContext:
             runAsNonRoot: true
             runAsUser: 10000
