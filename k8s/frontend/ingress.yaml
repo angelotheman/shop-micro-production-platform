@@ -15,20 +15,6 @@ spec:
   - host: angelotheman.myddns.me
     http:
       paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 8080
-      - path: /ml
-        pathType: Prefix
-        backend:
-          service:
-            name: ml-service
-            port:
-              number: 5000
       - path: /
         pathType: Prefix
         backend:
