@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ml-service
-          image: shopmicroregistry.azurecr.io/shopmicro-ml:e195eda567506e65f72e056a0174844cad41ab26
+          image: shopmicroregistry.azurecr.io/shopmicro-ml:637eecf67087294028fadccdadfeef88a5599bca
           ports:
             - containerPort: 5000
           livenessProbe:
