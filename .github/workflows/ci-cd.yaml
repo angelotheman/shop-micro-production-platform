@@ -129,27 +129,12 @@ jobs:
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --name ${{ env.AKS_NAME }} \
             --overwrite-existing
-
-      - name: Update image tags in k8s manifests
+      
+      - name: Update images in cluster
         run: |
-          cd k8s
-          
-          # Update backend image
-          sed -i "s|$REGISTRY/shopmicro-backend:.*|$REGISTRY/shopmicro-backend:$IMAGE_TAG|" backend/deployment.yaml
-          
-          # Update frontend image
-          sed -i "s|$REGISTRY/shopmicro-frontend:.*|$REGISTRY/shopmicro-frontend:$IMAGE_TAG|" frontend/deployment.yaml
-          
-          # Update ml-service image
-          sed -i "s|$REGISTRY/shopmicro-ml:.*|$REGISTRY/shopmicro-ml:$IMAGE_TAG|" ml-service/deployment.yaml
-
-      - name: Commit and push image tag updates
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add k8s/backend/deployment.yaml k8s/frontend/deployment.yaml k8s/ml-service/deployment.yaml
-          git diff --staged --quiet || git commit -m "Update image tags to $IMAGE_TAG"
-          git push
+          kubectl -n shopmicro set image deployment/backend backend=$REGISTRY/shopmicro-backend:$IMAGE_TAG
+          kubectl -n shopmicro set image deployment/frontend frontend=$REGISTRY/shopmicro-frontend:$IMAGE_TAG
+          kubectl -n shopmicro set image deployment/ml-service ml-service=$REGISTRY/shopmicro-ml:$IMAGE_TAG
 
       - name: Deploy to Kubernetes
         run: |
