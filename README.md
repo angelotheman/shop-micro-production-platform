@@ -9,8 +9,10 @@ A production-ready microservices e-commerce platform. Clone this repo and run it
 | Frontend | https://shopmicro.example.dns |
 | Backend API | https://shopmicro.example.dns/api/products |
 | ML Service | https://shopmicro.example.dns/ml/recommendations/42 |
+| Grafana Monitoring | https://shopmicro.example.dns/monitor |
 
 > **Note**: SSL/TLS is provided by Let's Encrypt with automatic certificate renewal via cert-manager.
+> **Grafana Credentials**: admin / changeme-secure-password
 > **Replace `shopmicro.example.dns` with your actual domain in GitHub secrets.**
 
 ## Configuration

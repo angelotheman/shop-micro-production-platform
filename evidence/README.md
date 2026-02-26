@@ -2,21 +2,19 @@
 
 This directory contains artifacts and evidence from deployments, tests, and demonstrations.
 
-## Contents
-
-### Required Screenshots (Capture These)
+## Required Screenshots (Capture These)
 
 | File | How to Capture |
 |------|----------------|
 | `deployment-pods.png` | `kubectl get pods -n shopmicro` |
 | `deployment-services.png` | `kubectl get svc -n shopmicro` |
 | `tls-certificate.png` | `kubectl get certificate -n shopmicro` |
-| `frontend-screenshot.png` | Visit https://shopmicro.example.dns in browser |
-| `api-response.png` | `curl https://shopmicro.example.dns/api/products` |
+| `frontend-screenshot.png` | Visit https://your-domain in browser |
+| `api-response.png` | `curl https://your-domain/api/products` |
 | `github-actions-pipeline.png` | GitHub → Actions → Latest run |
-| `grafana-dashboard.png` | Access Grafana via port-forward |
+| `grafana-dashboard.png` | Visit https://your-domain/monitor |
 
-### Commands to Run
+## Commands to Run
 
 ```bash
 # 1. Get pod status
@@ -29,30 +27,38 @@ kubectl get svc -n shopmicro
 kubectl get certificate -n shopmicro
 
 # 4. Test API
-curl https://shopmicro.example.dns/api/products
+curl https://your-domain/api/products
 
 # 5. Test ML service  
-curl https://shopmicro.example.dns/ml/recommendations/42
+curl https://your-domain/ml/recommendations/42
 
 # 6. Access Grafana (monitoring)
-kubectl port-forward -n monitoring svc/grafana 3000:3000
-# Then open http://localhost:3000 (admin/admin123)
+# URL: https://your-domain/monitor
+# Login: admin / changeme-secure-password
 ```
 
-### Rollback Evidence
+## Rollback Evidence
+
+To demonstrate rollback capability:
 
 ```bash
-# Show deployment history
+# 1. Show deployment history
 kubectl rollout history deployment/backend -n shopmicro
 
-# Rollback to previous version
+# 2. Take screenshot of history output - save as rollback-history.png
+
+# 3. Rollback to previous version
 kubectl rollout undo deployment/backend -n shopmicro
 
-# Verify rollback
+# 4. Take screenshot of rollback command - save as rollback-executed.png
+
+# 5. Verify rollback
 kubectl rollout status deployment/backend -n shopmicro --timeout=120s
+
+# 6. Take screenshot of verified status - save as rollback-verified.png
 ```
 
-### Test Results
+## Testing
 
 ```bash
 # Run linting
@@ -60,7 +66,4 @@ npm run lint
 
 # Run tests
 npm test
-
-# Save output
-npm test > evidence/test-results.txt
 ```

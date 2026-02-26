@@ -42,8 +42,10 @@ The platform is deployed on Azure Kubernetes Service (AKS) with the following en
 | Frontend | `https://shopmicro.example.dns` |
 | Backend API | `https://shopmicro.example.dns/api/products` |
 | ML Service | `https://shopmicro.example.dns/ml/recommendations/42` |
+| Grafana Monitoring | `https://shopmicro.example.dns/monitor` |
 
 > **Note**: Replace `shopmicro.example.dns` with your actual domain configured in GitHub secrets.
+> **Grafana Credentials**: admin / changeme-secure-password
 
 ### Infrastructure Details
 
