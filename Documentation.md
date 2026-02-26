@@ -50,6 +50,64 @@ The platform is deployed on Azure Kubernetes Service (AKS) with the following en
 - **Container Registry**: Azure Container Registry (ACR)
 - **Ingress**: NGINX Ingress Controller with Azure Load Balancer
 - **External IP**: Assigned automatically by Azure
+- **TLS/SSL**: Let's Encrypt with cert-manager (auto-renewal)
+
+---
+
+## TLS/SSL Configuration (Let's Encrypt)
+
+The platform uses **Let's Encrypt** for free SSL certificates with **cert-manager** for automatic certificate management.
+
+### Components
+
+| Component | Purpose |
+|-----------|---------|
+| cert-manager | Kubernetes operator for managing TLS certificates |
+| ClusterIssuer | Let's Encrypt configuration for automatic certificate issuance |
+| Certificate | TLS certificate resource stored as Kubernetes secret |
+
+### How It Works
+
+1. **cert-manager** watches for Certificate resources
+2. When an Ingress with TLS is created, cert-manager creates a Challenge
+3. Let's Encrypt validates domain ownership via HTTP-01 challenge
+4. Certificate is issued and stored in Kubernetes secret
+5. **Auto-renewal**: Certificates auto-renew 30 days before expiry
+
+### Configuration
+
+```yaml
+# ClusterIssuer (k8s/frontend/cluster-issuer.yaml)
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@your-domain.com
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+```
+
+### Ingress TLS Configuration
+
+```yaml
+spec:
+  tls:
+  - hosts:
+    - angelotheman.myddns.me
+    secretName: shopmicro-tls
+```
+
+### Checking Certificate Status
+
+```bash
+kubectl get certificate -n shopmicro
+kubectl describe certificate shopmicro-tls -n shopmicro
+```
 
 ---
 

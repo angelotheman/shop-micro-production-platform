@@ -10,6 +10,30 @@ A production-ready microservices e-commerce platform. Clone this repo and run it
 | Backend API | https://angelotheman.myddns.me/api/products |
 | ML Service | https://angelotheman.myddns.me/ml/recommendations/42 |
 
+> **Note**: SSL/TLS is provided by Let's Encrypt with automatic certificate renewal via cert-manager.
+
+## Configuration
+
+### Changing Domain
+
+The domain is configured as a GitHub secret. To change it:
+
+1. Go to GitHub → Repository Settings → Secrets and variables → Actions
+2. Update the `DOMAIN` secret (e.g., `your-new-domain.myddns.me`)
+3. The workflow will automatically update the ingress and obtain a new TLS certificate
+
+### Required GitHub Secrets
+
+| Secret | Description | Example |
+|--------|-------------|---------|
+| `REGISTRY` | Azure Container Registry name | `shopmicroregistry` |
+| `RESOURCE_GROUP` | Azure Resource Group | `shop-micro-rg` |
+| `KUBERNETES_NAME` | AKS cluster name | `shopmicro-aks` |
+| `DOMAIN` | Your domain name | `angelotheman.myddns.me` |
+| `AZURE_CR_USERNAME` | ACR username | (from `az acr credential show`) |
+| `AZURE_CR_PASSWORD` | ACR password | (from `az acr credential show`) |
+| `AZURE_SP_CREDENTIALS` | Service Principal JSON | (from `az ad sp create-for-rbac`) |
+
 ## Quick Start (Local Development)
 
 ```bash
