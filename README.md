@@ -6,11 +6,12 @@ A production-ready microservices e-commerce platform. Clone this repo and run it
 
 | Service | URL |
 |---------|-----|
-| Frontend | https://angelotheman.myddns.me |
-| Backend API | https://angelotheman.myddns.me/api/products |
-| ML Service | https://angelotheman.myddns.me/ml/recommendations/42 |
+| Frontend | https://shopmicro.example.dns |
+| Backend API | https://shopmicro.example.dns/api/products |
+| ML Service | https://shopmicro.example.dns/ml/recommendations/42 |
 
 > **Note**: SSL/TLS is provided by Let's Encrypt with automatic certificate renewal via cert-manager.
+> **Replace `shopmicro.example.dns` with your actual domain in GitHub secrets.**
 
 ## Configuration
 
@@ -422,9 +423,23 @@ kubectl apply -f k8s/
 
 | Service | URL | Status |
 |---------|-----|--------|
-| Frontend | https://angelotheman.myddns.me | ✅ Running |
-| Backend API | https://angelotheman.myddns.me/api/products | ✅ Running |
-| ML Service | https://angelotheman.myddns.me/ml/recommendations/42 | ✅ Running |
+| Frontend | https://shopmicro.example.dns | ✅ Running |
+| Backend API | https://shopmicro.example.dns/api/products | ✅ Running |
+| ML Service | https://shopmicro.example.dns/ml/recommendations/42 | ✅ Running |
+
+### Evidence Collection
+
+See the `evidence/` folder for screenshots of:
+
+| File | Description |
+|------|-------------|
+| `evidence/deployment-output.png` | Kubernetes pods and services running |
+| `evidence/frontend-screenshot.png` | Frontend showing products |
+| `evidence/api-response.png` | API returning products |
+| `evidence/tls-certificate.png` | Let's Encrypt certificate issued |
+| `evidence/github-actions.png` | CI/CD pipeline success |
+| `evidence/grafana-dashboard.png` | Grafana metrics dashboard |
+| `evidence/rollback-test.png` | Rollback demonstration |
 
 ### Kubernetes Resources
 
@@ -445,7 +460,7 @@ kubectl get certificate -n shopmicro
 ### Sample API Response
 
 ```bash
-$ curl https://angelotheman.myddns.me/api/products
+$ curl https://shopmicro.example.dns/api/products
 [{"id":1,"name":"Mechanical Keyboard","price":"79.99"},
  {"id":2,"name":"4K Monitor","price":"299.99"},
  {"id":3,"name":"USB-C Dock","price":"129.99"}]

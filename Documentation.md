@@ -39,9 +39,11 @@ The platform is deployed on Azure Kubernetes Service (AKS) with the following en
 
 | Service | Endpoint |
 |---------|----------|
-| Frontend | `https://angelotheman.myddns.me` |
-| Backend API | `https://angelotheman.myddns.me/api/products` |
-| ML Service | `https://angelotheman.myddns.me/ml/recommendations/42` |
+| Frontend | `https://shopmicro.example.dns` |
+| Backend API | `https://shopmicro.example.dns/api/products` |
+| ML Service | `https://shopmicro.example.dns/ml/recommendations/42` |
+
+> **Note**: Replace `shopmicro.example.dns` with your actual domain configured in GitHub secrets.
 
 ### Infrastructure Details
 
