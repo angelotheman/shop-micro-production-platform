@@ -416,6 +416,51 @@ kubectl apply -f k8s/
 
 ---
 
+## Deployment Evidence
+
+### Live URLs
+
+| Service | URL | Status |
+|---------|-----|--------|
+| Frontend | https://angelotheman.myddns.me | ✅ Running |
+| Backend API | https://angelotheman.myddns.me/api/products | ✅ Running |
+| ML Service | https://angelotheman.myddns.me/ml/recommendations/42 | ✅ Running |
+
+### Kubernetes Resources
+
+```bash
+# All pods running
+kubectl get pods -n shopmicro
+
+# Services exposed
+kubectl get svc -n shopmicro
+
+# Ingress with TLS
+kubectl get ingress -n shopmicro
+
+# TLS Certificate (Let's Encrypt)
+kubectl get certificate -n shopmicro
+```
+
+### Sample API Response
+
+```bash
+$ curl https://angelotheman.myddns.me/api/products
+[{"id":1,"name":"Mechanical Keyboard","price":"79.99"},
+ {"id":2,"name":"4K Monitor","price":"299.99"},
+ {"id":3,"name":"USB-C Dock","price":"129.99"}]
+```
+
+### Rollback Evidence
+
+The CI/CD pipeline commits image tags to GitHub. To rollback:
+
+1. Find previous working commit: `git log --oneline`
+2. Revert or checkout previous commit: `git revert <commit>`
+3. Pipeline will automatically redeploy
+
+---
+
 ## What's Next?
 
 - See [Documentation.md](./Documentation.md) for detailed architecture and technical explanations

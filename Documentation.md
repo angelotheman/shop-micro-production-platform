@@ -499,6 +499,25 @@ spec:
 
 ## Observability Stack
 
+The platform includes a monitoring stack deployed in the `monitoring` namespace.
+
+### Components Deployed
+
+| Component | Namespace | Purpose |
+|-----------|-----------|---------|
+| Prometheus | monitoring | Metrics collection and storage |
+| Grafana | monitoring | Visualization and dashboards |
+
+### Accessing Dashboards
+
+```bash
+# Port-forward to access Grafana
+kubectl port-forward -n monitoring svc/grafana 3000:3000
+
+# Then access at: http://localhost:3000
+# Default credentials: admin / admin123
+```
+
 ### Architecture (LGTM Stack)
 
 ```
