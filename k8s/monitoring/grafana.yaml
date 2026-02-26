@@ -31,11 +31,9 @@ spec:
         image: grafana/grafana:10.2.0
         ports:
         - containerPort: 3000
-        env:
-        - name: GF_SECURITY_ADMIN_USER
-          value: admin
-        - name: GF_SECURITY_ADMIN_PASSWORD
-          value: admin123
+        envFrom:
+        - secretRef:
+            name: grafana-credentials
         resources:
           requests:
             cpu: 50m
