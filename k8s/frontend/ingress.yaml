@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: shopmicro.example.com
+  - host: angelotheman.myddns.me
     http:
       paths:
       - path: /

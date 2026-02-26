@@ -6,9 +6,9 @@ A production-ready microservices e-commerce platform. Clone this repo and run it
 
 | Service | URL |
 |---------|-----|
-| Frontend | https://shopmicro.yourdomain.com |
-| Backend API | https://shopmicro.yourdomain.com/api/products |
-| ML Service | https://shopmicro.yourdomain.com/ml/recommendations/42 |
+| Frontend | https://angelotheman.myddns.me |
+| Backend API | https://angelotheman.myddns.me/api/products |
+| ML Service | https://angelotheman.myddns.me/ml/recommendations/42 |
 
 ## Quick Start (Local Development)
 

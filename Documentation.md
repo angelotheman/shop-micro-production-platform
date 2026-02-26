@@ -39,9 +39,9 @@ The platform is deployed on Azure Kubernetes Service (AKS) with the following en
 
 | Service | Endpoint |
 |---------|----------|
-| Frontend | `https://shopmicro.<your-domain>.com` |
-| Backend API | `https://shopmicro.<your-domain>.com/api/products` |
-| ML Service | `https://shopmicro.<your-domain>.com/ml/recommendations/42` |
+| Frontend | `https://angelotheman.myddns.me` |
+| Backend API | `https://angelotheman.myddns.me/api/products` |
+| ML Service | `https://angelotheman.myddns.me/ml/recommendations/42` |
 
 ### Infrastructure Details
 
