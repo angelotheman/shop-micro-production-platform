@@ -33,6 +33,26 @@ This platform showcases:
 
 ---
 
+## Live Deployment
+
+The platform is deployed on Azure Kubernetes Service (AKS) with the following endpoints:
+
+| Service | Endpoint |
+|---------|----------|
+| Frontend | `https://shopmicro.<your-domain>.com` |
+| Backend API | `https://shopmicro.<your-domain>.com/api/products` |
+| ML Service | `https://shopmicro.<your-domain>.com/ml/recommendations/42` |
+
+### Infrastructure Details
+
+- **Cloud Provider**: Microsoft Azure
+- **Kubernetes**: AKS (Azure Kubernetes Service)
+- **Container Registry**: Azure Container Registry (ACR)
+- **Ingress**: NGINX Ingress Controller with Azure Load Balancer
+- **External IP**: Assigned automatically by Azure
+
+---
+
 ## Architecture
 
 ### High-Level Architecture

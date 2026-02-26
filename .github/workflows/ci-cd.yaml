@@ -155,9 +155,25 @@ jobs:
           # Install NGINX Ingress Controller if not present
           kubectl get ns ingress-nginx &>/dev/null || kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
           
-          # Apply namespace and all resources
+          # Apply namespace and all resources (recursively)
           kubectl apply -f k8s/namespace.yaml
-          kubectl apply -f k8s/
+          kubectl apply -f k8s/backend/
+          kubectl apply -f k8s/frontend/
+          kubectl apply -f k8s/ml-service/
+          kubectl apply -f k8s/postgres/
+          kubectl apply -f k8s/redis/
+          
+          # Create secret if not exists
+          kubectl create secret generic backend-secrets -n shopmicro \
+            --from-literal=DB_PASSWORD=postgres \
+            --from-literal=DB_USER=postgres \
+            --dry-run=client -o yaml | kubectl apply -f -
+          
+          # Wait for postgres to be ready
+          kubectl wait --for=condition=ready pod/postgres-0 -n shopmicro --timeout=120s || true
+          
+          # Initialize database if needed
+          kubectl exec postgres-0 -n shopmicro -- psql -U postgres -d shopmicro -c "CREATE TABLE IF NOT EXISTS products (id SERIAL PRIMARY KEY, name TEXT NOT NULL, price NUMERIC(10,2) NOT NULL);" 2>/dev/null || true
           
       - name: Verify deployment
         run: |

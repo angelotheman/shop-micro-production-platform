@@ -2,6 +2,14 @@
 
 A production-ready microservices e-commerce platform. Clone this repo and run it locally or deploy to the cloud.
 
+## Live URLs (Production)
+
+| Service | URL |
+|---------|-----|
+| Frontend | https://shopmicro.yourdomain.com |
+| Backend API | https://shopmicro.yourdomain.com/api/products |
+| ML Service | https://shopmicro.yourdomain.com/ml/recommendations/42 |
+
 ## Quick Start (Local Development)
 
 ```bash

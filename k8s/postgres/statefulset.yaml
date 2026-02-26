@@ -14,6 +14,13 @@ spec:
       labels:
         app: postgres
     spec:
+      initContainers:
+        - name: init-postgres
+          image: busybox
+          command: ['sh', '-c', 'rm -rf /var/lib/postgresql/data/lost+found || true']
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
       containers:
         - name: postgres
           image: postgres:16
@@ -38,4 +45,3 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        storageClassName: default
