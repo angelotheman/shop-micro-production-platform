@@ -15,6 +15,7 @@ env:
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   AKS_NAME: ${{ secrets.KUBERNETES_NAME }}
   IMAGE_TAG: ${{ github.sha }}
+  DOMAIN: ${{ secrets.DOMAIN }}
 
 jobs:
   lint:
@@ -152,11 +153,20 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
+          # Install cert-manager for Let's Encrypt
+          kubectl get ns cert-manager &>/dev/null || kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+          
           # Install NGINX Ingress Controller if not present
           kubectl get ns ingress-nginx &>/dev/null || kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
           
+          # Update ingress domain
+          cd k8s/frontend
+          sed -i "s|angelotheman.myddns.me|$DOMAIN|g" ingress.yaml
+          cd ../..
+          
           # Apply namespace and all resources (recursively)
           kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/frontend/cluster-issuer.yaml
           kubectl apply -f k8s/backend/
           kubectl apply -f k8s/frontend/
           kubectl apply -f k8s/ml-service/

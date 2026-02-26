@@ -5,8 +5,13 @@ metadata:
   namespace: shopmicro
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - angelotheman.myddns.me
+    secretName: shopmicro-tls
   rules:
   - host: angelotheman.myddns.me
     http:
