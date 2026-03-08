@@ -91,3 +91,10 @@ evidence/**/*.gz
 # -------------------------
 *.bak
 *.orig
+
+# -------------------------
+# ASSIGNMENTS (LOCAL ONLY)
+# -------------------------
+EXTRA_CONFIG.md
+EXTRA_CREDIT_ASSIGNMENT.md
+FINAL_CAPSTONE_ASSIGNMENT.md
